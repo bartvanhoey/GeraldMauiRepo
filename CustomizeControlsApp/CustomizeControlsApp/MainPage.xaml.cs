@@ -1,6 +1,6 @@
 ﻿namespace CustomizeControlsApp;
 
-public partial class MainPage : ContentPage
+public partial class MainPage  : CustomizeEntryPage
 {
     int count = 0;
 
@@ -21,3 +21,4 @@ public partial class MainPage : ContentPage
         SemanticScreenReader.Announce(CounterBtn.Text);
     }
 }
+
