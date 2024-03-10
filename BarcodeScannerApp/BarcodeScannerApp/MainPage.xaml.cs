@@ -1,4 +1,6 @@
-﻿namespace BarcodeScannerApp;
+﻿using ZXing.Net.Maui;
+
+namespace BarcodeScannerApp;
 
 public partial class MainPage : ContentPage
 {
@@ -7,17 +9,20 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         InitializeComponent();
+        CameraBarcodeReaderView.Options = new BarcodeReaderOptions
+        {
+            Formats = BarcodeFormats.OneDimensional,
+            AutoRotate = true,
+            Multiple = true
+        };
     }
 
-    private void OnCounterClicked(object sender, EventArgs e)
+    protected void BarcodesDetected(object sender, BarcodeDetectionEventArgs e)
     {
-        count++;
+        foreach (var barcode in e.Results)
+            Console.WriteLine($"Barcodes: {barcode.Format} -> {barcode.Value}");
 
-        if (count == 1)
-            CounterBtn.Text = $"Clicked {count} time";
-        else
-            CounterBtn.Text = $"Clicked {count} times";
-
-        SemanticScreenReader.Announce(CounterBtn.Text);
+        Dispatcher.Dispatch(() => { BarcodeLabel.Text = $"{e.Results[0].Value} {e.Results[0].Format}"; }
+        );
     }
 }
